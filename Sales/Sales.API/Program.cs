@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddControllers();
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
@@ -17,10 +16,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=CnSqlServer"));
-//builder.Services.AddTransient<SeedDb>();
-
-//builder.Services.AddOpenApi();
+//builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=CnSqlServer"));
+builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
 
@@ -39,5 +36,11 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 
 app.Run();

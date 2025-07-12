@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Sales.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class dbInicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Countries",
+                name: "Categorias",
                 columns: table => new
                 {
                     IdCategoria = table.Column<int>(type: "int", nullable: false)
@@ -23,12 +23,12 @@ namespace Sales.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countries", x => x.IdCategoria);
+                    table.PrimaryKey("PK_Categorias", x => x.IdCategoria);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Countries_Descripcion",
-                table: "Countries",
+                name: "IX_Categorias_Descripcion",
+                table: "Categorias",
                 column: "Descripcion",
                 unique: true);
         }
@@ -37,7 +37,7 @@ namespace Sales.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "Categorias");
         }
     }
 }

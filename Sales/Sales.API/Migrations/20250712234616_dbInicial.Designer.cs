@@ -12,8 +12,8 @@ using Sales.API.Data;
 namespace Sales.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250712225253_InitialDb")]
-    partial class InitialDb
+    [Migration("20250712234616_dbInicial")]
+    partial class dbInicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace Sales.API.Migrations
                     b.HasIndex("Descripcion")
                         .IsUnique();
 
-                    b.ToTable("Countries");
+                    b.ToTable("Categorias");
                 });
 #pragma warning restore 612, 618
         }

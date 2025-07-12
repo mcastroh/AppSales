@@ -47,7 +47,7 @@ namespace Sales.API.Migrations
                     b.HasIndex("Descripcion")
                         .IsUnique();
 
-                    b.ToTable("Countries");
+                    b.ToTable("Categorias");
                 });
 #pragma warning restore 612, 618
         }
