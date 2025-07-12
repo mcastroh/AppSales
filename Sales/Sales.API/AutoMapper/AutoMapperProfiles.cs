@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Sales.Shared.DTOs;
 using Sales.Shared.Entites;
 
 namespace Logistics.BackEnd.AutoMapper;
@@ -10,8 +11,16 @@ public class AutoMapperProfiles : Profile
         #region Tablas => Genéricas
 
         // <------ Almacén ------>
-        CreateMap<Country, BasicTablesDTO>().ReverseMap();
-        CreateMap<BasicTablesCreateDTO, Country>().ReverseMap();
+        CreateMap<Categoria, CategoriaDTO>().ReverseMap();
+        CreateMap<CategoriaDTO, Categoria>().ReverseMap();
+
+        //CreateMap<Categoria, CategoriaDTO>().ReverseMap()
+        //    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name));
+
+        //        var mapConfig = new MapperConfiguration(
+        //   cfg => cfg.CreateMap<Employee, EmployeeDto>()
+        //      .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name))
+        //);
 
         //// <------ Grupo de Productos ------>
         //CreateMap<Grupo, BasicTablesDTO>().ReverseMap();
