@@ -1,10 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sales.Shared.Entites;
 
 public partial class Categoria
 {
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("IdCategoria")]
     public int IdCategoria { get; set; }
 
     [Display(Name = "Categoría")]
