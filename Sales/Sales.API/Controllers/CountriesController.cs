@@ -59,8 +59,14 @@ public class CountriesController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteAsync(int id)
     {
-        var afectedRows = await _context.Countries.Where(x => x.Id == id).ExecuteDeleteAsync();
-        if (afectedRows == 0) return NotFound();
+        //var afectedRows = await _context.Countries.Where(x => x.Id == id).ExecuteDeleteAsync();
+        //if (afectedRows == 0) return NotFound();
+        //return NoContent();
+
+        var entity = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+        if (entity is null) return NotFound();
+        _context.Remove(entity);
+        await _context.SaveChangesAsync();
         return NoContent();
     }
 }
