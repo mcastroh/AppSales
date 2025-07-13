@@ -1,8 +1,10 @@
 ﻿@page "/countries" 
 
 @inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
 
-<h3>Paises</h3>
+<h3>Países</h3>
 
 <div class="mb-3">
     <a class="btn btn-primary" href="/countries/create">Nuevo País</a>
@@ -22,8 +24,12 @@
                 {
                     <tr>
                         <td>
-                            <a class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger">Borrar</button>
+                            @* <a class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger">Borrar</button> *@
+
+                            <a href="/countries/edit/@country.Id" class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger" @onclick=@(() => Delete(country))>Borrar</button>
+
                         </td>
                         <td>
                             @country.Name
@@ -36,11 +42,62 @@
 </GenericList>
 
 @code {
+    // public List<Country>? Countries { get; set; }
+
+    // protected async override Task OnInitializedAsync()
+    // {
+    //     var responseHppt = await repository.GetAsync<List<Country>>("api/countries");
+    //     Countries = responseHppt.Response!;
+    // }
+
+
     public List<Country>? Countries { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
+        await Load();
+    }
+
+    private async Task Load()
+    {
         var responseHppt = await repository.GetAsync<List<Country>>("api/countries");
         Countries = responseHppt.Response!;
+    }
+
+    private async Task Delete(Country country)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+        {
+            Title = "Confirmación",
+            Text = "¿Esta seguro que quieres borrar el registro?",
+            Icon = SweetAlertIcon.Question,
+            ShowCancelButton = true
+        });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHTTP = await repository.DeleteAsync($"api/countries/{country.Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/");
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            await Load();
+        }
     }
 }

@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sales.API.Data;
+using Sales.API.Migrations;
 using Sales.Shared.DTOs;
 using Sales.Shared.Entities;
+using Country = Sales.Shared.Entities.Country;
 
 namespace Sales.API.Controllers;
 
@@ -37,23 +39,71 @@ public class CountriesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostAsync(CountryCreateDTO creationDTO)
     {
-        var entity = _mapper.Map<Country>(creationDTO);
+        //var entity = _mapper.Map<Country>(creationDTO);
         //public TDestination Map<TDestination>(object source) => Map(source, default(TDestination));
+        //_context.Add(entity);
+        //await _context.SaveChangesAsync();
+        //return Ok(entity);
+
+        var entity = _mapper.Map<Country>(creationDTO);
         _context.Add(entity);
-        await _context.SaveChangesAsync();
-        return Ok(entity);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(entity);
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+            {
+                return BadRequest("Ya existe un país con el mismo nombre.");
+            }
+            else
+            {
+                return BadRequest(dbUpdateException.InnerException.Message);
+            }
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult> PutAsync(int id, CountryCreateDTO creationDTO)
     {
+        //var entity = _mapper.Map<Country>(creationDTO);
+        //entity.Id = id;
+
+        //_context.Update(entity);
+
+        //await _context.SaveChangesAsync();
+        //return Ok(entity);
+
         var entity = _mapper.Map<Country>(creationDTO);
         entity.Id = id;
 
-        _context.Update(entity);
-
-        await _context.SaveChangesAsync();
-        return Ok(entity);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(entity);
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+            {
+                return BadRequest("Ya existe un registro con el mismo nombre.");
+            }
+            else
+            {
+                return BadRequest(dbUpdateException.InnerException.Message);
+            }
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
     }
 
     [HttpDelete("{id:int}")]
