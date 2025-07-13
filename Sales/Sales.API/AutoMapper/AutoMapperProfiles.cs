@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Sales.Shared.DTOs;
-using Sales.Shared.Entites;
+using Sales.Shared.Entities;
 
 namespace Sales.API.AutoMapper;
 
@@ -13,14 +13,22 @@ public class AutoMapperProfiles : Profile
         //Mapper.CreateMap<YourEntityViewModel, YourEntity>();
 
         // <------ Country ------>
-        //CreateMap<Country, CountryDTO>().ReverseMap();
-        CreateMap<CountryCreateDTO, Country>();
-        CreateMap<Country, CountryCreateDTO>();
+        CreateMap<Country, CountryCreateDTO>().ReverseMap();
+        //CreateMap<Country, CountryCreateDTO>().ReverseMap();
+        CreateMap<CountryCreateDTO, Country>().ReverseMap();
+
+        //CreateMap<CountryCreateDTO, Country>()
+        //    .ForMember(x => x.Id, x => x.Ignore())
+        //    .EqualityComparison((a, b) => a.Name == b.Name)
+        //    .ReverseMap();
 
         //CreateMap<AutoresCreateDTO, Autor>().ForMember(m => m.Foto, options => options.Ignore());
 
+        //    public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>() =>
+        //CreateMapCore<TSource, TDestination>(MemberList.Destination);
+
         // <------ Almacén ------>
-        CreateMap<Categoria, CategoriaDTO>().ReverseMap();
+        //CreateMap<Categoria, CategoriaDTO>().ReverseMap();
         //CreateMap<CategoriaDTO, Categoria>().ReverseMap();
 
         //CreateMap<Categoria, CategoriaDTO>().ReverseMap()

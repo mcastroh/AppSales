@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Sales.Shared.Entites;
+namespace Sales.Shared.Entities;
 
 public partial class Categoria
 {

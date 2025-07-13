@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Sales.Shared.Entites;
+namespace Sales.Shared.Entities;
 
 public class Country
 {

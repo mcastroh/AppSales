@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sales.API.Data;
-using Sales.API.Migrations;
 using Sales.Shared.DTOs;
+using Sales.Shared.Entities;
 
 namespace Sales.API.Controllers;
 
@@ -30,6 +30,9 @@ public class CountriesController : ControllerBase
     public async Task<IActionResult> PostAsync([FromForm] CountryCreateDTO creationDTO)
     {
         var entity = _mapper.Map<Country>(creationDTO);
+
+        //public TDestination Map<TDestination>(object source) => Map(source, default(TDestination));
+
         _context.Add(entity);
         await _context.SaveChangesAsync();
         return Ok(entity);
