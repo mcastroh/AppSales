@@ -53,6 +53,34 @@ public class Repository : IRepository
         return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
     }
 
+    public async Task<HttpResponseWrapper<object>> PutAsync<T>(string url, T model)
+    {
+        var messageJSON = JsonSerializer.Serialize(model);
+        var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");
+        var responseHttp = await _httpClient.PutAsync(url, messageContent);
+        return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
+    }
+
+    public async Task<HttpResponseWrapper<TResponse>> PutAsync<T, TResponse>(string url, T model)
+    {
+        var messageJSON = JsonSerializer.Serialize(model);
+        var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");
+        var responseHttp = await _httpClient.PutAsync(url, messageContent);
+        if (responseHttp.IsSuccessStatusCode)
+        {
+            var response = await UnserializeAnswer<TResponse>(responseHttp, _jsonDefaultOptions);
+            return new HttpResponseWrapper<TResponse>(response, false, responseHttp);
+        }
+
+        return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
+    }
+
+    public async Task<HttpResponseWrapper<object>> DeleteAsync(string url)
+    {
+        var responseHTTP = await _httpClient.DeleteAsync(url);
+        return new HttpResponseWrapper<object>(null, !responseHTTP.IsSuccessStatusCode, responseHTTP);
+    }
+
     private async Task<T> UnserializeAnswer<T>(HttpResponseMessage httpResponse, JsonSerializerOptions jsonSerializerOptions)
     {
         var respuestaString = await httpResponse.Content.ReadAsStringAsync();
