@@ -1,6 +1,5 @@
-using Logistics.BackEnd.AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Sales.API.AutoMapper;
 using Sales.API.Data;
 using System.Text.Json.Serialization;
 
@@ -16,7 +15,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
-//builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=CnSqlServer"));
 builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();

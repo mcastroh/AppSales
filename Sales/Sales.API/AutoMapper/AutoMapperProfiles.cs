@@ -2,7 +2,7 @@
 using Sales.Shared.DTOs;
 using Sales.Shared.Entites;
 
-namespace Logistics.BackEnd.AutoMapper;
+namespace Sales.API.AutoMapper;
 
 public class AutoMapperProfiles : Profile
 {
@@ -10,9 +10,18 @@ public class AutoMapperProfiles : Profile
     {
         #region Tablas => Genéricas
 
+        //Mapper.CreateMap<YourEntityViewModel, YourEntity>();
+
+        // <------ Country ------>
+        //CreateMap<Country, CountryDTO>().ReverseMap();
+        CreateMap<CountryCreateDTO, Country>();
+        CreateMap<Country, CountryCreateDTO>();
+
+        //CreateMap<AutoresCreateDTO, Autor>().ForMember(m => m.Foto, options => options.Ignore());
+
         // <------ Almacén ------>
         CreateMap<Categoria, CategoriaDTO>().ReverseMap();
-        CreateMap<CategoriaDTO, Categoria>().ReverseMap();
+        //CreateMap<CategoriaDTO, Categoria>().ReverseMap();
 
         //CreateMap<Categoria, CategoriaDTO>().ReverseMap()
         //    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name));
