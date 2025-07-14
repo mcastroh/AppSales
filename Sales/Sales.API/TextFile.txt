@@ -11,3 +11,8 @@ Migraciones
 	add-migration InitialDb
 	update-database
 
+
+---
+builder.Services.AddSingleton	=> El objeto permanece en memoria todo el tiempo
+builder.Services.AddScope		=> Cada vez que el objeto es requerido se crea
+builder.Services.AddTransient	=> Se inyecta una sóla vez

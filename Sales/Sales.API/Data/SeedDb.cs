@@ -15,6 +15,24 @@ public class SeedDb
     {
         await _context.Database.EnsureCreatedAsync();
         await CheckCountriesAsync();
+        await CheckCategoriasAsync();
+    }
+
+    private async Task CheckCategoriasAsync()
+    {
+        if (!_context.Categorias.Any())
+        {
+            _context.Categorias.Add(new Categoria { Name = "Alimentos" });
+            _context.Categorias.Add(new Categoria { Name = "Belleza" });
+            _context.Categorias.Add(new Categoria { Name = "Deportes" });
+            _context.Categorias.Add(new Categoria { Name = "Electrodomésticos" });
+            _context.Categorias.Add(new Categoria { Name = "Higiene y Salud" });
+            _context.Categorias.Add(new Categoria { Name = "Maquillaje" });
+            _context.Categorias.Add(new Categoria { Name = "Ropa" });
+            _context.Categorias.Add(new Categoria { Name = "Tecnología" });
+        }
+
+        await _context.SaveChangesAsync();
     }
 
     private async Task CheckCountriesAsync()

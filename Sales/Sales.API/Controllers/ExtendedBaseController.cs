@@ -1,0 +1,70 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Sales.API.Data;
+using Sales.Shared.Interfaces;
+
+namespace Sales.API.Controllers;
+
+public class ExtendedBaseController<TCreation, TEntity, TDTO> : ControllerBase where TEntity : class, IHaveId
+{
+    private readonly DataContext _context;
+    private readonly IMapper _mapper;
+
+    public ExtendedBaseController(DataContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
+
+    [HttpGet]
+    public virtual async Task<ActionResult<List<TDTO>>> GetAllAsync()
+    {
+        var entities = await _context.Set<TEntity>().ToListAsync();
+        return _mapper.Map<List<TDTO>>(entities);
+    }
+
+    [HttpGet("{id}")]
+    public virtual async Task<ActionResult<TDTO>> GetByIdAsync(int id)
+    {
+        var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+        if (entity == null) return NotFound();
+        return _mapper.Map<TDTO>(entity);
+    }
+
+    [HttpPost]
+    public virtual async Task<IActionResult> PostAsync(TCreation creation)
+    {
+        var entity = _mapper.Map<TEntity>(creation);
+        await _context.AddAsync(entity);
+        await _context.SaveChangesAsync();
+        var dto = _mapper.Map<TDTO>(entity);
+        return StatusCode(StatusCodes.Status201Created, entity);
+    }
+
+    [HttpPut("{id}")]
+    public virtual async Task<IActionResult> PutAsync(int id, TCreation creation)
+    {
+        var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+        if (entity == null) return NotFound();
+
+        _mapper.Map(creation, entity);
+
+        _context.Entry(entity).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public virtual async Task<IActionResult> DeleteAsync(int id)
+    {
+        var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+        if (entity == null) return NotFound();
+
+        _context.Entry(entity).State = EntityState.Deleted;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+}

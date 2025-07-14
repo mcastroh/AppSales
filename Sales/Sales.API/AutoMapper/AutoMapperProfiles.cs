@@ -12,9 +12,12 @@ public class AutoMapperProfiles : Profile
 
         //Mapper.CreateMap<YourEntityViewModel, YourEntity>();
 
+        // <------ Categorías ------>
+        CreateMap<Categoria, CategoriaCreateDTO>().ReverseMap();
+        CreateMap<CategoriaDTO, Categoria>().ReverseMap();
+
         // <------ Country ------>
         CreateMap<Country, CountryCreateDTO>().ReverseMap();
-        //CreateMap<Country, CountryCreateDTO>().ReverseMap();
         CreateMap<CountryCreateDTO, Country>().ReverseMap();
 
         //CreateMap<CountryCreateDTO, Country>()

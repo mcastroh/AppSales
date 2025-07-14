@@ -17,7 +17,7 @@ public class DataContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
-        modelBuilder.Entity<Categoria>().HasIndex(c => c.Descripcion).IsUnique();
+        modelBuilder.Entity<Categoria>().HasIndex(c => c.Name).IsUnique();
     }
 
     /// <summary>
