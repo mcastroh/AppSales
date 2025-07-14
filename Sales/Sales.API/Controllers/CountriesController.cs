@@ -23,7 +23,7 @@ public class CountriesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetAsync()
     {
-        return Ok(await _context.Countries.ToListAsync());
+        return Ok(await _context.Countries.Include(x => x.States).ToListAsync());
     }
 
     [HttpGet("{id:int}")]
@@ -32,6 +32,12 @@ public class CountriesController : ControllerBase
         var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
         if (country is null) return NotFound();
         return Ok(country);
+    }
+
+    [HttpGet("full")]
+    public async Task<ActionResult> GetAsyncFull()
+    {
+        return Ok(await _context.Countries.Include(x => x.States!).ThenInclude(x => x.Cities).ToListAsync());
     }
 
     [HttpPost]

@@ -9,15 +9,19 @@ public class DataContext : DbContext
     {
     }
 
+    public DbSet<City> Cities { get; set; }
     public DbSet<Country> Countries { get; set; }
     public DbSet<Categoria> Categorias { get; set; }
+    public DbSet<State> States { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<City>().HasIndex(c => c.Name).IsUnique();
         modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
         modelBuilder.Entity<Categoria>().HasIndex(c => c.Name).IsUnique();
+        modelBuilder.Entity<State>().HasIndex(c => c.Name).IsUnique();
     }
 
     /// <summary>
