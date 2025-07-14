@@ -83,6 +83,7 @@ public class CountriesController : ControllerBase
 
         var entity = _mapper.Map<Country>(creationDTO);
         entity.Id = id;
+        _context.Update(entity);
 
         try
         {
