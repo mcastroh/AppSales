@@ -37,9 +37,27 @@ public class ExtendedBaseController<TCreation, TEntity, TDTO> : ControllerBase w
     {
         var entity = _mapper.Map<TEntity>(creation);
         await _context.AddAsync(entity);
-        await _context.SaveChangesAsync();
-        var dto = _mapper.Map<TDTO>(entity);
-        return StatusCode(StatusCodes.Status201Created, entity);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(entity);
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+            {
+                return BadRequest("Ya existe un registro con el mismo nombre.");
+            }
+            else
+            {
+                return BadRequest(dbUpdateException.InnerException.Message);
+            }
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
     }
 
     [HttpPut("{id}")]
@@ -47,13 +65,30 @@ public class ExtendedBaseController<TCreation, TEntity, TDTO> : ControllerBase w
     {
         var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
         if (entity == null) return NotFound();
-
         _mapper.Map(creation, entity);
+        entity.Id = id;
+        _context.Update(entity);
 
-        _context.Entry(entity).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(entity);
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+            {
+                return BadRequest("Ya existe un registro con el mismo nombre.");
+            }
+            else
+            {
+                return BadRequest(dbUpdateException.InnerException.Message);
+            }
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
     }
 
     [HttpDelete("{id}")]
