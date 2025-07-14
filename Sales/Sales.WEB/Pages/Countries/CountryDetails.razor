@@ -47,7 +47,7 @@ else
             </table>
         </Body>
     </GenericList>
-}
+} 
 
 @code {
     private Country? country;
@@ -64,6 +64,7 @@ else
     private async Task LoadAsync()
     {
         var responseHttp = await repository.GetAsync<Country>($"/api/countries/{Id}");
+
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
