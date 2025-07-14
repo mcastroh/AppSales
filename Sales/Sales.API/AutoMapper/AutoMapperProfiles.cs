@@ -21,7 +21,7 @@ public class AutoMapperProfiles : Profile
         CreateMap<CountryCreateDTO, Country>().ReverseMap();
 
         // <------ State ------>
-        CreateMap<State, CountryCreateDTO>().ReverseMap();
+        CreateMap<State, StateCreateDTO>().ReverseMap();
         CreateMap<StateDTO, State>().ReverseMap();
 
         // <------ City ------>
