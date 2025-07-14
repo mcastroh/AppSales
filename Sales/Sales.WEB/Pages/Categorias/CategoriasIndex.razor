@@ -14,9 +14,9 @@
     <Body>
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th></th>
+                <tr>                   
                     <th>Categoría</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,12 +24,12 @@
                 {
                     <tr>
                         <td>
-                            <a href="/categorias/edit/@entity.Id" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" @onclick=@(() => Delete(entity))>Borrar</button>
-                        </td>
-                        <td>
                             @entity.Name
                         </td>
+                        <td>
+                            <a href="/categorias/edit/@entity.Id" class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger" @onclick=@(() => Delete(entity))>Borrar</button>
+                        </td>                      
                     </tr>   
                 }
             </tbody>
