@@ -20,6 +20,14 @@ public class AutoMapperProfiles : Profile
         CreateMap<Country, CountryCreateDTO>().ReverseMap();
         CreateMap<CountryCreateDTO, Country>().ReverseMap();
 
+        // <------ State ------>
+        CreateMap<State, CountryCreateDTO>().ReverseMap();
+        CreateMap<StateDTO, State>().ReverseMap();
+
+        // <------ City ------>
+        CreateMap<City, CityCreateDTO>().ReverseMap();
+        CreateMap<CityDTO, City>().ReverseMap();
+
         //CreateMap<CountryCreateDTO, Country>()
         //    .ForMember(x => x.Id, x => x.Ignore())
         //    .EqualityComparison((a, b) => a.Name == b.Name)
