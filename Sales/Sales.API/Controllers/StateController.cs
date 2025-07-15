@@ -28,8 +28,8 @@ public class StateController : ExtendedBaseController<StateCreateDTO, State, Sta
             .ToListAsync());
     }
 
-    [HttpGet("item/{id:int}")]
-    public async Task<IActionResult> GetAsync(int id)
+    [HttpGet("{id}")]
+    public override async Task<ActionResult<State>> GetByIdAsync(int id)
     {
         var state = await _context.States.Include(x => x.Cities).FirstOrDefaultAsync(x => x.Id == id);
         if (state == null) return NotFound();

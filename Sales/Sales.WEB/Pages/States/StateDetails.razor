@@ -6,13 +6,13 @@
 
 @if (state is null)
 {
-    <p>Cargando...</p>
+    <p>Cargando... ojo => Ciudad MACH</p>
 }
 else
 {
     <h3>@state.Name</h3>
     <div class="mb-2">
-        <a class="btn btn-primary" href="/cities/create/@state.Id">Nueva Ciuadad</a>
+        <a class="btn btn-primary" href="/cities/create/@state.Id">Nueva Ciudad MACH </a>
         <a class="btn btn-success" href="/countries/details/@state.CountryId">Regresar</a>
     </div>
 
@@ -59,6 +59,9 @@ else
     private async Task LoadAsync()
     {
         var responseHttp = await repository.GetAsync<State>($"/api/states/{StateId}");
+
+        // var responseHttp = await repository.GetAsync<State>($"/api/cities/combo/{StateId}");
+
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)

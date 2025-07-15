@@ -18,18 +18,17 @@ public class ExtendedBaseController<TCreation, TEntity, TDTO> : ControllerBase w
     }
 
     [HttpGet]
-    public virtual async Task<ActionResult<List<TDTO>>> GetAllAsync()
+    public virtual async Task<ActionResult<List<TEntity>>> GetAllAsync()
     {
-        var entities = await _context.Set<TEntity>().ToListAsync();
-        return _mapper.Map<List<TDTO>>(entities);
+        return await _context.Set<TEntity>().ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public virtual async Task<ActionResult<TDTO>> GetByIdAsync(int id)
+    public virtual async Task<ActionResult<TEntity>> GetByIdAsync(int id)
     {
         var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
         if (entity == null) return NotFound();
-        return _mapper.Map<TDTO>(entity);
+        return entity;
     }
 
     [HttpPost]
