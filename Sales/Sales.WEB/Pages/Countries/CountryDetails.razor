@@ -12,7 +12,7 @@ else
 {
     <h3>@country.Name</h3>
     <div class="mb-2">
-        <a class="btn btn-primary" href="/states/create/@country.Id">Nuevo Estado/Departamento</a>
+        <a class="btn btn-primary" href="/states/create/@country.Id">Nuevo Departamento</a>
         <a class="btn btn-success" href="/countries">Regresar</a>
     </div>
 
@@ -21,8 +21,8 @@ else
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Estado / Departamento</th>
-                        <th>Ciudades</th>
+                        <th>Departamento</th>
+                        <th>Provincias</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,7 +37,7 @@ else
                                 @state.CitiesNumber
                             </td>
                             <td>
-                                <a class="btn btn-info" href="/states/details/@state.Id">Detalles</a>
+                                <a class="btn btn-info" href="/states/details/@state.Id">Provincias</a>
                                 <a class="btn btn-warning" href="/states/edit/@state.Id">Editar</a>
                                 <button class="btn btn-danger" @onclick=@(() => DeleteAsync(state.Id))>Borrar</button>
                             </td>

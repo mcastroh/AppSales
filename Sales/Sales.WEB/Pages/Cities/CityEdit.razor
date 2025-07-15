@@ -45,7 +45,7 @@ else
 
     private async Task EditAsync()
     {
-        var responseHttp = await repository.PutAsync($"/api/cities{CityId}", city);
+        var responseHttp = await repository.PutAsync($"/api/cities/{CityId}", city);
 
         if (responseHttp.Error)
         {
