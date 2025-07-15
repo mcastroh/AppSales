@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sales.API.Data;
+using Sales.API.Helpers;
 using Sales.Shared.DTOs;
 using Country = Sales.Shared.Entities.Country;
 
@@ -113,5 +114,36 @@ public class CountriesController : ControllerBase
         _context.Remove(entity);
         await _context.SaveChangesAsync();
         return NoContent();
+    }
+
+    [HttpGet("pagination")]
+    public async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+    {
+        var queryable = _context.Countries
+            .Include(x => x.States)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+
+        return Ok(await queryable
+            .OrderBy(x => x.Name)
+            .Paginate(pagination)
+            .ToListAsync());
+    }
+
+    [HttpGet("totalPages")]
+    public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
+    {
+        var queryable = _context.Countries.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        double count = await queryable.CountAsync();
+        double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+        return Ok(totalPages);
     }
 }
