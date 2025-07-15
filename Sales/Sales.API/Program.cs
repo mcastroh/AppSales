@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Sales.API.AutoMapper;
 using Sales.API.Data;
+using Sales.API.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<IApiService, ApiService>();
 
 var app = builder.Build();
 
